@@ -1,6 +1,19 @@
 name: PyInstaller Action
 uses: Martin005/pyinstaller-action@v1.2.0
-on: workflow_dispatch
+on:
+    push:
+    pull_request:
+    workflow_dispatch:
+        inputs:
+            logLevel:
+                description: 'Log level'
+                required: true
+                default: 'warning'
+                type: choice
+                options:
+                - info
+                - warning
+                - debug
 jobs:
   pyinstaller-build:
     runs-on: ubuntu-latest
