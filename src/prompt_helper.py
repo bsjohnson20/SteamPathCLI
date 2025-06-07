@@ -25,13 +25,21 @@ class PromptHelper:
         return None
 
     def prompt_game(self, text, default="None"):
-        response = pt.prompt(text, completer=self.completer, complete_while_typing=True)
-        if response == "":
-            return None
-        elif response == "q" or response == "quit":
-            print("Goodbye!")
+        try:
+            response = pt.prompt(text, completer=self.completer, complete_while_typing=True)
+        except KeyboardInterrupt:
+            print("\nCtrl+C received. Exiting.")
             sys.exit(0)
-        elif response[0].isalpha():
-            return self.find_game_str(response)
-        else:
-            return self.find_game_num(response)
+        try:
+            if response == "":
+                return None
+            elif response == "q" or response == "quit":
+                print("Goodbye!")
+                sys.exit(0)
+            elif response[0].isalpha():
+                return self.find_game_str(response)
+            else:
+                return self.find_game_num(response)
+        except ValueError:
+            print("Invalid input")
+            return None

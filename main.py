@@ -33,8 +33,11 @@ class SteamGamePathTool:
         self.prompter = PromptHelper(games)
         while True:
             self.prompt_user()
-            input("Press Enter to continue...")
-
+            try:
+                input("Press Enter to continue...")
+            except KeyboardInterrupt:
+                print("\nExiting...")
+                break
 
     def prompt_user(self):
         game = self.prompter.prompt_game(text="Input (game name | appid | q/quit): ")
@@ -60,7 +63,9 @@ class SteamGamePathTool:
         [white]Game ID: [yellow]{game['appid']}
         [white]Game Size: [red]{int(game['SizeOnDisk'])/(1024*1024)/1024:.2f} GB[/red]
         [white]Game acf: [green][link=file://{game['acf_path'].replace(' ', '%20')}]file[/link][/green]
-        [white]Game Path: [green][link=file://{game['true_path'].replace(' ', '%20')}]dir[/link][/green]"""
+        [white]Game Path: [blue][link=file://{game['true_path'].replace(' ', '%20')}]dir[/link][/blue]"""
+        if game['workshop_path']:
+            string += f"\n\t[white]Workshop Path: [blue][link=file://{game['workshop_path'].replace(' ', '%20')}]dir[/link][/blue]"
         if game['compatdata_path']:
             string += f"\n\t[white]Compatdata dir: [blue][link=file://{game['compatdata_path'].replace(' ', '%20')}]dir[/link][/blue]"
         return string

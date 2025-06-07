@@ -27,8 +27,8 @@ def fetch_steam_path() -> str:
     """
     Determines the Steam installation path by checking common locations.
 
-    Returns the path to the Steam 'steamapps' directory. 
-    Prefers the path used by the apt installation if it exists. 
+    Returns the path to the Steam 'steamapps' directory.
+    Prefers the path used by the apt installation if it exists.
     Otherwise, returns the path used by the Flatpak installation.
 
     :return: Path to the Steam 'steamapps' directory
@@ -100,6 +100,7 @@ def fetchall_vdfs(steam_vdf_json: dict):
                 parsed_game['root_steam_folder'] = path
                 parsed_game['true_path'] = os.path.join(steamapps, "common", parsed_game['installdir'])
                 parsed_game['compatdata_path'] = os.path.join(steamapps, "compatdata", str(gameID)) if os.path.exists(os.path.join(steamapps, "compatdata", str(gameID))) else None
+                parsed_game['workshop_path'] = os.path.join(steamapps, "workshop", "content", str(gameID)) if os.path.exists(os.path.join(steamapps, "workshop", "content", str(gameID))) else ""
                 games.append(parsed_game)
                 # print("Game name:", parsed_game['name'], "ID:", gameID, "Path:", parsed_game['true_path'])
     return games
