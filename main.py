@@ -5,7 +5,7 @@ from rich.console import Console
 from rich.columns import Columns
 from rich.panel import Panel
 import vdfparser as vd
-from prompt_helper import PromptHelper
+from src.prompt_helper import PromptHelper
 
 class SteamGamePathTool:
     def __init__(self):
