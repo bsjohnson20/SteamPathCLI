@@ -26,5 +26,5 @@ jobs:
           spec: 'main.spec'
           requirements: 'requirements.txt'
           upload_exe_with_name: 'steamPathCLI'
-          options: --onefile, --name "SteamPathsCLI", --windowed
+          options: --onefile, --name "SteamPathsCLI"
           spec_options: # any custom arguments you want like: `--debug`
