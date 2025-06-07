@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='steamPathCLI',
+    name='steamPathCLI.sh',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
