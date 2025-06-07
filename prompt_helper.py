@@ -4,6 +4,8 @@ import sys
 
 def generate_completer(game_list):
     g_list = [x['name'] for x in game_list] + [x['appid'] for x in game_list]
+    g_list.append("q")
+    g_list.append("quit")
     return FuzzyCompleter(WordCompleter(g_list))
 
 class PromptHelper:

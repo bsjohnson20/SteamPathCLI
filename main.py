@@ -20,15 +20,15 @@ class SteamGamePathTool:
         self.steam_vdf = vd.parse_vdf(self.steam_vdf_path)
         self.steam_library_locations = vd.find_extra_locations(self.steam_vdf)
 
-        for library in self.steam_library_locations:
-            print(f"[+] Found Steam library at: {library}")
-
         games = vd.fetchall_vdfs(self.steam_vdf)
         games = self.sort_games(games)
 
         console = Console()
         game_rend = [Panel(self.get_game_content(game), expand=True) for game in games]
         console.print(Columns(game_rend))
+
+        for library in self.steam_library_locations:
+            print(f"[+] Found Steam library at: {library}")
 
         self.prompter = PromptHelper(games)
         while True:
