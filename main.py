@@ -31,16 +31,18 @@ class SteamGamePathTool:
         console.print(Columns(game_rend))
 
         self.prompter = PromptHelper(games)
-        self.prompt_user()
-        
+        while True:
+            self.prompt_user()
+            input("Press Enter to continue...")
+
 
     def prompt_user(self):
-        game = self.prompter.prompt_game(text="Enter a game (name | appid) to search for: ")
+        game = self.prompter.prompt_game(text="Input (game name | appid | q/quit): ")
         if game is None:
             return
         console = Console()
         console.print(Panel(self.get_game_content(game), expand=True))
-        
+
 
     def sort_games(self, games):
         return sorted(games, key=lambda x: x['name'])
