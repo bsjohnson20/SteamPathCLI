@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: 3.14
           pyinstaller_ver: '==5.13.2'
-          spec: 'build.spec'
+          spec: 'main.spec'
           requirements: 'requirements.txt'
           upload_exe_with_name: 'steamPathCLI'
           options: --onefile, --name "SteamPathsCLI", --windowed
