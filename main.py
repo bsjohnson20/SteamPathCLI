@@ -81,9 +81,7 @@ class SteamGamePathTool:
         # Spaces must be replaced with %20 otherwise they won't link properly
 
         string = f"""[b]{game['name']}[/b]"""
-        string+=str(TableItem(name="Game ID", data=game['appid'], colour="yellow",type="desc"))
-        string+=str(TableItem(name="Game Size", data=f"{int(game['SizeOnDisk'])/(1024*1024)/1024:.2f} GB", colour="red",type="desc"))
-        string+=str(TableItem(name="Game acf", data=f"{game['acf_path'].replace(' ', '%20')}", colour="green",type="dir"))
+        string+=str(TableItem(name="Game acf", data=f"{game['acf_path'].replace(' ', '%20')}", colour="green",type="file"))
         string+=str(TableItem(name="Game Path", data=f"{game['true_path'].replace(' ', '%20')}", colour="blue",type="dir"))
         if game['workshop_path']:
             string+=str(TableItem(name="Game Workshop Path", data=f"{game['workshop_path'].replace(' ', '%20')}", colour="blue", type="dir"))
