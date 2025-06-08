@@ -7,6 +7,24 @@ from rich.panel import Panel
 import src.vdfparser as vd
 from src.prompt_helper import PromptHelper
 
+class TableItem:
+    def __init__(self, name, data='', colour='white', type='desc'):
+        self.name = name
+        self.data = data
+        self.type = type
+        self.colour = colour
+
+    def generate_link(self):
+        if self.type == 'file':
+            return f"[{self.colour}][link=file://{self.data}]file[/link][/{self.colour}]"
+        elif self.type == 'dir':
+            return f"[{self.colour}][link=file://{self.data}]dir[/link][/{self.colour}]"
+        else:
+            return f"[{self.colour}]{self.data}[/{self.colour}]"
+
+    def __str__(self):
+        return f"\n[white]{self.name}[/white]: [{self.colour}]"+self.generate_link()+""
+
 class SteamGamePathTool:
     def __init__(self):
         self.steam_path = vd.fetch_steam_path()
@@ -17,15 +35,13 @@ class SteamGamePathTool:
             # Add user input to attempt to find
             self.steam_vdf_path = prompt("Enter the path to the Steam VDF file: ", default=self.steam_path)
 
+        # Fetch steam's vdf file and convert to json dict
         self.steam_vdf = vd.parse_vdf(self.steam_vdf_path)
+        # Possible other locations where steamlibrary could be found
         self.steam_library_locations = vd.find_extra_locations(self.steam_vdf)
 
         games = vd.fetchall_vdfs(self.steam_vdf)
         self.games = self.sort_games(games)
-
-        # console = Console()
-        #
-        # console.print(Columns(game_rend))
 
         for library in self.steam_library_locations:
             print(f"[+] Found Steam library at: {library}")
@@ -64,15 +80,16 @@ class SteamGamePathTool:
         """
         # Spaces must be replaced with %20 otherwise they won't link properly
 
-        string = f"""[b]{game['name']}[/b]
-        [white]Game ID: [yellow]{game['appid']}
-        [white]Game Size: [red]{int(game['SizeOnDisk'])/(1024*1024)/1024:.2f} GB[/red]
-        [white]Game acf: [green][link=file://{game['acf_path'].replace(' ', '%20')}]file[/link][/green]
-        [white]Game Path: [blue][link=file://{game['true_path'].replace(' ', '%20')}]dir[/link][/blue]"""
+        string = f"""[b]{game['name']}[/b]"""
+        string+=str(TableItem(name="Game ID", data=game['appid'], colour="yellow",type="desc"))
+        string+=str(TableItem(name="Game Size", data=f"{int(game['SizeOnDisk'])/(1024*1024)/1024:.2f} GB", colour="red",type="desc"))
+        string+=str(TableItem(name="Game acf", data=f"{game['acf_path'].replace(' ', '%20')}", colour="green",type="dir"))
+        string+=str(TableItem(name="Game Path", data=f"{game['true_path'].replace(' ', '%20')}", colour="blue",type="dir"))
         if game['workshop_path']:
-            string += f"\n\t[white]Workshop Path: [blue][link=file://{game['workshop_path'].replace(' ', '%20')}]dir[/link][/blue]"
-        if game['compatdata_path']:
-            string += f"\n\t[white]Compatdata dir: [blue][link=file://{game['compatdata_path'].replace(' ', '%20')}]dir[/link][/blue]"
+            string+=str(TableItem(name="Game Workshop Path", data=f"{game['workshop_path'].replace(' ', '%20')}", colour="blue", type="dir"))
+        if game["compatdata_path"]:
+            string+=str(TableItem(name="Game Compatdata Path",data=f"{game['compatdata_path'].replace(' ', '%20')}",colour="blue",type="dir"))
         return string
+
 if __name__ == "__main__":
     steam_path_tool = SteamGamePathTool()
