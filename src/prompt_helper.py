@@ -6,6 +6,7 @@ def generate_completer(game_list):
     g_list = [x['name'] for x in game_list] + [x['appid'] for x in game_list]
     g_list.append("q")
     g_list.append("quit")
+    g_list.append("all")
     return FuzzyCompleter(WordCompleter(g_list))
 
 class PromptHelper:
@@ -33,6 +34,8 @@ class PromptHelper:
         try:
             if response == "":
                 return None
+            elif response == "all":
+                return "fetch_all_games"
             elif response == "q" or response == "quit":
                 print("Goodbye!")
                 sys.exit(0)

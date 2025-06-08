@@ -21,11 +21,11 @@ class SteamGamePathTool:
         self.steam_library_locations = vd.find_extra_locations(self.steam_vdf)
 
         games = vd.fetchall_vdfs(self.steam_vdf)
-        games = self.sort_games(games)
+        self.games = self.sort_games(games)
 
-        console = Console()
-        game_rend = [Panel(self.get_game_content(game), expand=True) for game in games]
-        console.print(Columns(game_rend))
+        # console = Console()
+        #
+        # console.print(Columns(game_rend))
 
         for library in self.steam_library_locations:
             print(f"[+] Found Steam library at: {library}")
@@ -40,11 +40,16 @@ class SteamGamePathTool:
                 break
 
     def prompt_user(self):
-        game = self.prompter.prompt_game(text="Input (game name | appid | q/quit): ")
+        game = self.prompter.prompt_game(text="Input (game name | appid | all | q/quit): ")
         if game is None:
             return
-        console = Console()
-        console.print(Panel(self.get_game_content(game), expand=True))
+        elif game == 'fetch_all_games':
+            console = Console()
+            game_rend = [Panel(self.get_game_content(game), expand=True) for game in self.games]
+            console.print(Columns(game_rend))
+        else:
+            console = Console()
+            console.print(Panel(self.get_game_content(game), expand=True))
 
 
     def sort_games(self, games):
